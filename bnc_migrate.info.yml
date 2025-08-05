@@ -1,0 +1,8 @@
+name: bnc_migrate # Name of custom migration 
+type: module
+description: 'Custom migration to migrate BNC data from drupal 7 to drupal 9'
+core_version_requirement: ^9 || ^10
+package: BNC # Change the package name to 'BNC' to be able to categorize project migrations under the 'BNC' group making it easier to locate and manage BNC migrations
+dependencies:
+  - drupal:migrate
+  - migrate_plus:migrate_plus

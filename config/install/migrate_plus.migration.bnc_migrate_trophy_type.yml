@@ -1,0 +1,39 @@
+# Migration configuration for trophy_type content.
+id: bnc_migrate_trophy_type 
+
+label: Trophy Type
+migration_tags:
+  - Drupal 7
+  - Content
+source:
+  plugin: bnc_migrate_trophy_type
+
+destination:
+  plugin: entity:trophy_type
+
+# process section...  
+process:
+  id:
+    -
+      plugin: get
+      source: id
+  type:
+    -
+      plugin: get
+      source: type
+  label:
+    -
+      plugin: get
+      source: label
+  awardid:
+    -
+      plugin: get
+      source: awardid
+  weight:
+    -
+      plugin: get
+      source: weight
+  status:
+    -
+      plugin: get
+      source: status

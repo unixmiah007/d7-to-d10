@@ -1,0 +1,54 @@
+
+id: scorechart_crownpointstotal
+label: 'Migrate crownpointstotal from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_crownpointstotal
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - crownpoints_total_right
+    - crownpoints_total_left
+    - crownpoints_total_total
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_crownpoints_total_right:
+    plugin: concat
+    source:
+      - crownpointstotal_right
+  field_crownpointstotal_left:
+    plugin: concat
+    source:
+      - crownpoints_total_left
+  field_crownpoints_total_total:
+    plugin: concat
+    source:
+      - crownpoints_total_total
+destination:
+  source_module: bnc_migrate
+  default_bundle: crownpointstotal
+  plugin: scorechart_field_crownpointstotal
+  key:
+    - entity_id
+    - delta
+    - langcode
+#   - entity_type
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

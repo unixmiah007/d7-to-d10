@@ -1,0 +1,53 @@
+
+id: scorechart_g14
+label: 'Migrate g14 from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_field_g14
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - g14_right
+    - g14_left
+    - g14_difference
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_g14_right:
+    plugin: concat
+    source:
+      - g14_right
+  field_g14_left:
+    plugin: concat
+    source:
+      - g14_left
+  field_g14_difference:
+    plugin: concat
+    source:
+      - g14_difference
+destination:
+  source_module: bnc_migrate
+  default_bundle: g14
+  plugin: scorechart_field_g14
+  key:
+    - entity_id
+    - delta
+    - langcode
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

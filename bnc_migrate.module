@@ -1,0 +1,154 @@
+<?php
+
+/**
+ * @file
+ * Primary module hooks for bnc_migrate module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function bnc_migrate_install() {
+  // The machine name of the module you want to enable.
+  $module_name = 'bnc_migrate';
+
+  // Check if the module is already installed and enabled.
+  if (!\Drupal::moduleHandler()->moduleExists($module_name)) {
+    // Install and enable the module programmatically.
+    \Drupal::service('module_installer')->install([$module_name]);
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function bnc_migrate_uninstall() {
+  // List of configuration objects to delete.
+  $config_objects = [
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    'migrate_plus.migration.bnc_migrate_scorechart',
+    'migrate_plus.migration.bnc_migrate_scorechart_type',
+    'migrate_plus.migration.bnc_migrate_trophy',
+    'migrate_plus.migration.bnc_migrate_trophy_type',
+    
+  ];
+
+  // Load the config factory service.
+  $config_factory = \Drupal::configFactory();
+
+  // Loop through each configuration object and delete it.
+  foreach ($config_objects as $config_name) {
+    $config = $config_factory->getEditable($config_name);
+    if ($config) {
+      $config->delete();
+    }
+  }
+}
+
+/**
+ * Implements hook_migration_plugins_alter().
+ *
+ * Alters migration plugins, specifically modifying Pathauto update actions.
+ */
+function bnc_migrate_migration_plugins_alter(array &$migrations) {
+  // List of Pathauto update actions to be modified.
+  $pathauto_update_actions = [
+    'pathauto_file_update_action',
+    'pathauto_node_update_action',
+    'pathauto_taxonomy_term_update_action',
+    'pathauto_user_update_action',
+  ];
+
+  // Iterate through each Pathauto update action.
+  foreach ($pathauto_update_actions as $pathauto_update_action) {
+    // Alter the migration plugin to use 'pathauto_update_alias'.
+    $migrations['d7_action']['process']['plugin'][0]['map'][$pathauto_update_action] = 'pathauto_update_alias';
+  }
+}
+
+/**
+ * Implements hook_drush_command().
+ */
+function bnc_migrate_drush_command() {
+  $items = array();
+
+  $items['update-field-instance'] = array(
+    'description' => 'Custom Drush command example',
+    'callback' => 'bnc_migrate_custom_drush_command', // Updated callback function name
+    'aliases' => array('ufi'), // Optional: Define command aliases
+  );
+
+  return $items;
+}
+
+/**
+ * Callback function for the custom Drush command.
+ */
+function bnc_migrate_custom_drush_command() {
+  // Your command logic goes here.
+
+  // Database Connection (Add your database connection code here)
+
+  // Example: Replace 'your_database_name', 'your_database_user', 'your_database_password' and 'localhost' with your actual database credentials.
+  $database_url = 'mysql://your_database_user:your_database_password@localhost/your_database_name';
+
+  // If your database server is on a different host, use the host option in the database URL:
+  // $database_url = 'mysql://your_database_user:your_database_password@your_database_host/your_database_name';
+
+  // Set the active database connection
+  Database::addConnectionInfo('default', 'default', $database_url);
+
+  // Ensure the active database connection is established
+  drupal_bootstrap(DRUPAL_BOOTSTRAP_DATABASE);
+
+  // Your entity reference fields array here
+  $entityref_fields = array('field_name_1', 'field_name_2'); // Replace with your actual field names
+
+  // DB Update script goes here
+  foreach ($entityref_fields as $ref_name) {
+    $result = db_query('SELECT field_name, data FROM {field_config} WHERE field_name = :name', array(':name' => $ref_name));
+    foreach ($result as $record) {
+      $data = unserialize($record->data);
+
+      $data['settings']['handler_settings']['sort'] = [
+        'type' => 'none',
+      ];
+
+      // Write settings back to the database.
+      db_update('field_config')
+        ->fields(
+          array(
+            'data' => serialize($data),
+          )
+        )
+        ->condition('field_name', $ref_name, '=')
+        ->execute();
+    }
+    drupal_flush_all_caches();
+  }
+
+  drush_print('Finished.');
+}

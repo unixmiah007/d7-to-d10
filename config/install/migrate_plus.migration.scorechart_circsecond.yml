@@ -1,0 +1,58 @@
+
+id: scorechart_circsecond
+label: 'Migrate circsecond from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_circsecond
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - circsecond_right
+    - circsecond_left
+    - circsecond_whole_loc
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_circsecond_right:
+    plugin: concat
+    source:
+      - circsecond_right
+  field_circsecond_left:
+    plugin: concat
+    source:
+      - circsecond_left
+  field_circsecond_difference:
+    plugin: concat
+    source:
+      - circsecond_difference
+  field_circsecond_loc:
+    plugin: concat
+    source:
+      - circsecond_whole_loc
+destination:
+  source_module: bnc_migrate
+  default_bundle: circsecond
+  plugin: scorechart_field_circsecond
+  key:
+    - entity_id
+    - delta
+    - langcode
+#   - entity_type
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

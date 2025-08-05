@@ -1,0 +1,43 @@
+# Migration configuration for bc_migrate_scorechart content.
+id: bnc_migrate_scorechart
+label: Scorechart
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: bnc_migrate_scorechart
+process:
+  scorechart_id:
+    -
+      plugin: get
+      source: scorechart_id
+  type:
+    -
+      plugin: get
+      source: type
+  trophy_id:
+    -
+      plugin: get
+      source: trophy_id
+  awardid:
+    -
+      plugin: get
+      source: awardid
+  created:
+    -
+      plugin: get
+      source: created
+  changed:
+    -
+      plugin: get
+      source: changed
+  uid:
+    -
+      plugin: get
+      source: uid
+destination:
+  # Specify the destination plugin (usually entity:entity_type).
+  plugin: entity:scorechart
+  source_module: trophy
+  default_bundle: scorechart

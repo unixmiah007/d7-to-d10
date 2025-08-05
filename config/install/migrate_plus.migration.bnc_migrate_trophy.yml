@@ -1,0 +1,55 @@
+# Migration configuration for bnc_migrate_trophy content.
+id: bnc_migrate_trophy
+label: 'Trophy'
+migration_tags:
+  - Drupal 7
+  - Content
+source:
+  plugin: bnc_migrate_trophy
+destination:
+  plugin: entity:trophy
+  source_module: trophy  
+process:
+  
+# process section...
+process:
+  trophy_id:
+    -
+      plugin: get
+      source: trophy_id
+  type:
+    -
+      plugin: get
+      source: type
+  scorechart_id:
+    -
+      plugin: get
+      source: scorechart_id
+  awardid:
+    -
+      plugin: get
+      source: awardid
+  created:
+    -
+      plugin: get
+      source: created
+  changed:
+    -
+      plugin: get
+      source: changed
+  uid:
+    -
+      plugin: get
+      source: uid
+  vid:
+    -
+      plugin: get
+      source: vid
+  log:
+    -
+      plugin: get
+      source: log
+  mod_count:
+    -
+      plugin: get
+      source: mod_count

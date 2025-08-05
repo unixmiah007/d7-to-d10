@@ -1,0 +1,88 @@
+
+id: scorechart_finalscoreantler
+label: 'Migrate finalscoreantler from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_field_finalscoreantler
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - field_finalscoreantler_abnormals
+    - field_finalscoreantler_gross
+    - field_finalscoreantler_spread
+    - field_finalscoreantler_right
+    - field_finalscoreantler_left
+    - field_finalscoreantler_crown
+    - field_finalscoreantler_difference
+    - field_finalscoreantler_subtotal
+    - field_finalscoreantler_subtotal2
+    - field_finalscoreantler_total
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_finalscoreantler_abnormals:
+    plugin: concat
+    source:
+      - field_finalscoreantler_abnormals
+  field_finalscoreantler_gross:
+    plugin: concat
+    source:
+      - field_finalscoreantler_gross
+  field_finalscoreantler_spread:
+    plugin: concat
+    source:
+      - field_finalscoreantler_spread
+  field_finalscoreantler_right:
+    plugin: concat
+    source:
+      - field_finalscoreantler_right
+  field_finalscoreantler_left:
+    plugin: concat
+    source:
+      - field_finalscoreantler_left
+  field_finalscoreantler_crown:
+    plugin: concat
+    source:
+      - field_finalscoreantler_crown
+  field_finalscoreantler_difference:
+    plugin: concat
+    source:
+      - field_finalscoreantler_difference
+  field_finalscoreantler_subtotal:
+    plugin: concat
+    source:
+      - field_finalscoreantler_subtotal
+  field_finalscoreantler_subtotal2:
+    plugin: concat
+    source:
+      - field_finalscoreantler_subtotal2
+  field_finalscoreantler_total:
+    plugin: concat
+    source:
+      - field_finalscoreantler_total
+destination:
+  source_module: bnc_migrate
+  default_bundle: finalscoreantler
+  plugin: scorechart_field_finalscoreantler
+  key:
+    - entity_id
+    - delta
+    - langcode
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

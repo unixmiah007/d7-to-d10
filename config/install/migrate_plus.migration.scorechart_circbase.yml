@@ -1,0 +1,53 @@
+
+id: scorechart_circbase
+label: 'Migrate Circbase from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_circbase
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - circbase_right
+    - circbase_left
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_circbase_right:
+    plugin: concat
+    source:
+      - circbase_right
+  field_circbase_left:
+    plugin: concat
+    source:
+      - circbase_left
+  field_circbase_difference:
+    plugin: concat
+    source:
+      - circbase_difference
+destination:
+  source_module: bnc_migrate
+  default_bundle: circbase
+  plugin: scorechart_field_circbase
+  key:
+    - entity_id
+    - delta
+    - langcode
+#   - entity_type
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

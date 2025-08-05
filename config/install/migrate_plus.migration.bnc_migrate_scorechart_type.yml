@@ -1,0 +1,37 @@
+id: bnc_migrate_scorechart_type
+label: Scorechart Type configuration
+migration_tags:
+  - Drupal 7
+  - Configuration
+source:
+  plugin: bnc_migrate_scorechart_type
+  constants:
+    preview: 1 # DRUPAL_OPTIONAL
+process:
+  id:
+    -
+      plugin: get
+      source: id
+  type:
+    -
+      plugin: get
+      source: type
+  label:
+    -
+      plugin: get
+      source: label
+  awardid:
+    -
+      plugin: get
+      source: awardid
+  weight:
+    -
+      plugin: get
+      source: weight
+  status:
+    -
+      plugin: get
+      source: status
+destination:
+  plugin: entity:scorechart_type
+

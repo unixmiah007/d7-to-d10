@@ -1,0 +1,53 @@
+
+id: scorechart_d1
+label: 'Migrate d1 from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_field_d1
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - d1_right
+    - d1_left
+    - d1_difference
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_d1_right:
+    plugin: concat
+    source:
+      - d1_right
+  field_d1_left:
+    plugin: concat
+    source:
+      - d1_left
+  field_d1_difference:
+    plugin: concat
+    source:
+      - d1_difference
+destination:
+  source_module: bnc_migrate
+  default_bundle: d1
+  plugin: scorechart_field_d1
+  key:
+    - entity_id
+    - delta
+    - langcode
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

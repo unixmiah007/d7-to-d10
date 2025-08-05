@@ -1,0 +1,53 @@
+
+id: scorechart_palmlength
+label: 'Migrate palmlength from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_field_palmlength
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - field_palmlength_right
+    - field_palmlength_left
+    - field_palmlength_difference
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_palmlength_right:
+    plugin: concat
+    source:
+      - palmlength_right
+  field_palmlength_left: 
+    plugin: concat
+    source:
+      - palmlength_left 
+  field_palmlength_difference:
+    plugin: concat
+    source:
+      - palmlength_difference
+destination:
+  source_module: bnc_migrate
+  default_bundle: palmlength
+  plugin: scorechart_field_palmlength
+  key:
+    - entity_id
+    - delta
+    - langcode
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate

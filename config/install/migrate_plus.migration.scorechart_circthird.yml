@@ -1,0 +1,59 @@
+
+id: scorechart_circthird
+label: 'Migrate circthird from Drupal 7 to Drupal 10'
+migration_tags:
+  - Drupal 7
+  - Content
+deriver: Drupal\bnc_migrate\Plugin\migrate\BncScorechartDeriver
+source:
+  plugin: scorechart_circthird
+  key: migrate_drupal_7
+  fields:
+    - entity_type
+    - bundle
+    - deleted
+    - entity_id
+    - revision_id
+    - langcode
+    - delta
+    - circthird_right
+    - circthird_left
+    - circthird_difference
+    - circthird_whole_loc
+process:
+  bundle: bundle
+  deleted: deleted
+  entity_id: entity_id
+  entity_type: entity_type
+  revision_id: revision_id
+  langcode: language
+  delta: delta
+  field_circthird_right:
+    plugin: concat
+    source:
+      - circthird_right
+  field_circthird_left:
+    plugin: concat
+    source:
+      - circthird_left
+  field_circthird_difference:
+    plugin: concat
+    source:
+      - circthird_difference
+  field_circthird_loc:
+    plugin: concat
+    source:
+      - circthird_whole_loc
+destination:
+  source_module: bnc_migrate
+  default_bundle: circthird
+  plugin: scorechart_field_circthird
+  key:
+    - entity_id
+    - delta
+    - langcode
+#   - entity_type
+dependencies:
+  enforced:
+    module:
+      - bnc_migrate
